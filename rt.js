@@ -68,6 +68,10 @@ BOOMR.plugins.RT = {
 
 		return this;
 	},
+	
+	getTimers: function() {
+		return impl.timers;
+	},
 
 	startTimer: function(timer_name) {
 		if(timer_name) {
@@ -224,7 +228,7 @@ BOOMR.plugins.RT = {
 			}
 		}
 
-		impl.timers = {};
+		//impl.timers = {};
 		impl.complete = true;
 
 		BOOMR.sendBeacon();	// we call sendBeacon() anyway because some other plugin
