@@ -13,28 +13,38 @@ var d=w.document;
 BOOMR = BOOMR || {};
 BOOMR.plugins = BOOMR.plugins || {};
 
-// A private object to encapsulate all your implementation details
-// This is optional, but the way we recommend you do it.
+
 var impl = {
 	complete: false,	//! Set when this plugin has completed
+	
+    sendByScript: function(path) {
+		var s=document.createElement('script');
+		s.src=path;
+		s.type='text/javascript';
+		if (document.body) {
+			document.body.appendChild(s);
+		}
+		else if (document.documentElement.getElementsByTagName('head')[0]) {
+			document.documentElement.getElementsByTagName('head')[0].appendChild(s);
+		}
+		impl.complete = true;
+    }
 };
 	
 BOOMR.plugins.CUST = {
 	init: function(config) {
-		var properties = ["cust_id"];
+		var properties = ["cust_id", "cust_page_id", "cust_group_id"];
 
 		// This block is only needed if you actually have user configurable properties
 		BOOMR.utils.pluginConfig(impl, config, "CUST", properties);
 
 		BOOMR.addVar("cust_id", impl.cust_id);
+		BOOMR.addVar("cust_page_id", impl.page_id);
+		BOOMR.addVar("cust_group_id", impl.group_id);
 
-		// make ajax call to server to get plugins list
+		// dynamically load JS which will init enabled plugins
+		impl.sendByScript(impl.config_path);
 		
-		// for each plugin, get the plugin javascript file
-
-		// init each of the plugins
-		
-		impl.complete = true;
 		return this;
 	},
 
