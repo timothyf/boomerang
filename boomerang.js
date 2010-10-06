@@ -276,7 +276,7 @@ boomr = {
 			if(this.plugins.hasOwnProperty(k)
 				&& typeof this.plugins[k].init === "function"
 			) {
-				this.plugins[k].init(config);
+				this.plugins[k].init(config); 
 			}
 		}
 	
@@ -398,6 +398,7 @@ boomr = {
 					continue;
 				}
 				if(!this.plugins[k].is_complete()) {
+					BOOMR.warn("Incomplete plugins, not sending beacon");
 					return this;
 				}
 			}
@@ -408,7 +409,11 @@ boomr = {
 
 		// Don't send a beacon if no beacon_url has been set
 		if(!impl.beacon_url) {
+			BOOMR.warn("No beacon_url set, not sending beacon");
 			return this;
+		}
+		else {
+			BOOMR.warn("Sending beacon");
 		}
 
 		url = impl.beacon_url + '?v=' + encodeURIComponent(BOOMR.version);
