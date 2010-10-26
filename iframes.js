@@ -64,13 +64,17 @@ BOOMR.plugins.IFRAMES = {
 		if(impl.iframes_poll_id) clearInterval(impl.iframes_poll_id);
 		impl.complete = true;
 		
-		var count=0;
-		for(var prop in impl.iframes_store) {
-		    if (impl.iframes_store.hasOwnProperty(prop)) {
-				var timers = BOOMR.plugins.RT.getTimers();
-				var start = timers[impl.iframes_store[prop].timer].start;
-				var end = timers[impl.iframes_store[prop].timer].end;
-		        BOOMR.addVar("iframe_obj_" + count++, impl.iframes_store[prop].host + '|' + start + '|' + end);
+		// only add beacon vars if this plugin is still enabled
+		if (!BOOMR.plugins.CUST ||
+			BOOMR.plugins.CUST && BOOMR.plugins.CUST.isEnabled('IFRAMES')) {
+			var count=0;
+			for(var prop in impl.iframes_store) {
+			    if (impl.iframes_store.hasOwnProperty(prop)) {
+					var timers = BOOMR.plugins.RT.getTimers();
+					var start = timers[impl.iframes_store[prop].timer].start;
+					var end = timers[impl.iframes_store[prop].timer].end;
+			        BOOMR.addVar("iframes_obj_" + count++, impl.iframes_store[prop].host + '|' + start + '|' + end);
+				}
 			}
 		}
 		
