@@ -18,6 +18,7 @@ for the full license text.
 (function(w) {
 
 var impl, boomr, k, d=w.document;
+var fb_time = new Date().getTime();
 
 // Short namespace because I don't want to keep typing BOOMERANG
 if(typeof BOOMR === "undefined") {
@@ -91,6 +92,10 @@ impl = {
 // we don't overwrite anything additional that was added to BOOMR before this
 // was called... for example, a plugin.
 boomr = {
+	firstByteTime:function() {
+		return fb_time;
+	},
+	
 	// Utility functions
 	utils: {
 		getCookie: function(name) {
@@ -398,7 +403,7 @@ boomr = {
 					continue;
 				}
 				if(!this.plugins[k].is_complete()) {
-					BOOMR.warn("Incomplete plugins, not sending beacon");
+					BOOMR.debug("Incomplete plugins, not sending beacon");
 					return this;
 				}
 			}
@@ -413,7 +418,7 @@ boomr = {
 			return this;
 		}
 		else {
-			BOOMR.warn("Sending beacon");
+			BOOMR.info("Sending beacon");
 		}
 
 		url = impl.beacon_url + '?v=' + encodeURIComponent(BOOMR.version);
@@ -471,6 +476,8 @@ for(k in boomr) {
 }
 
 BOOMR.plugins = BOOMR.plugins || {};
+
+boomr.addVar('fb_time',fb_time);
 
 }(window));
 
