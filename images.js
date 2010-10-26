@@ -88,13 +88,17 @@ BOOMR.plugins.IMGS = {
 		if(impl.images_poll_id) clearInterval(impl.images_poll_id);
 		impl.complete = true;
 		
-		var count=0;
-		for(var prop in impl.image_store) {
-		    if (impl.image_store.hasOwnProperty(prop)) {
-				var timers = BOOMR.plugins.RT.getTimers();
-				var start = timers[impl.image_store[prop].timer].start;
-				var end = timers[impl.image_store[prop].timer].end;
-		        BOOMR.addVar("img_obj_" + count++, impl.image_store[prop].host + '|' + start + '|' + end);
+		// only add beacon vars if this plugin is still enabled
+		if (!BOOMR.plugins.CUST ||
+			BOOMR.plugins.CUST && BOOMR.plugins.CUST.isEnabled('IMGS')) {
+			var count=0;
+			for(var prop in impl.image_store) {
+			    if (impl.image_store.hasOwnProperty(prop)) {
+					var timers = BOOMR.plugins.RT.getTimers();
+					var start = timers[impl.image_store[prop].timer].start;
+					var end = timers[impl.image_store[prop].timer].end;
+			        BOOMR.addVar("imgs_obj_" + count++, impl.image_store[prop].host + '|' + start + '|' + end);
+				}
 			}
 		}
 		
@@ -110,3 +114,4 @@ BOOMR.plugins.IMGS = {
 };
 
 }(window));
+
